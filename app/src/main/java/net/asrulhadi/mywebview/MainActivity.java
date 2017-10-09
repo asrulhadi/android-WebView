@@ -143,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-
     //String host = "www.mazhealthbeauty.examo.my";
     private final String host = "www.mazhealthbeauty.biz";
     private void loadWeb() {
