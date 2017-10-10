@@ -175,19 +175,24 @@ public class MainActivity extends AppCompatActivity {
             public void onProgressChanged(WebView view, int progress) {
                 //super.onProgressChanged(view, newProgress);
                 Log.d("WebView", "Progress : " + progress);
+                if (progressDialog == null ) {
+                    progressDialog = new ProgressDialog(MainActivity.this);
+                    progressDialog.setMax(100);
+                    progressDialog.setMessage("Loading ... ");
+                    progressDialog.setCancelable(false);
+                }
                 switch (progress) {
                     case 0:
-                        progressDialog = new ProgressDialog(MainActivity.this);
-                        progressDialog.setMax(100);
-                        progressDialog.setMessage("Loading ... ");
-                        progressDialog.setCancelable(false);
+                        progressDialog.setProgress(0);
                         progressDialog.show();
                         break;
                     case 100:
                         progressDialog.dismiss();
+                        progressDialog = null;
                         break;
                     default:
-                        progressDialog.setProgress(progress);
+                        if (progressDialog != null)
+                            progressDialog.setProgress(progress);
                 }
             }
         });
