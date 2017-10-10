@@ -170,29 +170,28 @@ public class MainActivity extends AppCompatActivity {
         });
         // web chrome setting -> back key
         mContentView.setWebChromeClient(new WebChromeClient() {
-            ProgressDialog progressDialog;
+            ProgressDialog progressDialog = null;
             @Override
             public void onProgressChanged(WebView view, int progress) {
                 //super.onProgressChanged(view, newProgress);
                 Log.d("WebView", "Progress : " + progress);
-                if (progressDialog == null ) {
+                if ( progress >= 100) {
+                    Log.d("WebView", "Closing progress dialog");
+                    if (progressDialog != null) {
+                        progressDialog.dismiss();
+                        progressDialog = null;
+                    }
+                } else if ( progressDialog == null ) {
+                    Log.d("WebView", "Creating progress dialog");
                     progressDialog = new ProgressDialog(MainActivity.this);
                     progressDialog.setMax(100);
                     progressDialog.setMessage("Loading ... ");
                     progressDialog.setCancelable(false);
-                }
-                switch (progress) {
-                    case 0:
-                        progressDialog.setProgress(0);
-                        progressDialog.show();
-                        break;
-                    case 100:
-                        progressDialog.dismiss();
-                        progressDialog = null;
-                        break;
-                    default:
-                        if (progressDialog != null)
-                            progressDialog.setProgress(progress);
+                    progressDialog.setProgress(progress);
+                    progressDialog.show();
+                } else {
+                    // already created and shown
+                    progressDialog.setProgress(progress);
                 }
             }
         });
